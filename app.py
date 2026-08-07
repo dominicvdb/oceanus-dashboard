@@ -260,7 +260,7 @@ def _(df_intents, json_lib, mo):
     var filterMsg = d3.select("#filter-msg");
     var filterCat = d3.select("#filter-cat");
 
-    // Color scale
+    /* Color scale */
     var catColors = d3.scaleOrdinal(d3.schemeTableau10).domain(catsSorted);
 
     var activeFilter = null;
@@ -279,7 +279,7 @@ def _(df_intents, json_lib, mo):
 
     filterMsg.on("click", function() {{ activeFilter = null; filterMsg.style("display", "none"); updateAll(); }});
 
-    // ═══ 1. CATEGORY BAR CHART ═══
+    /* ═══ 1. CATEGORY BAR CHART ═══ */
     var catMargin = {{top: 5, right: 60, bottom: 5, left: 160}};
     var catW = 700, catBarH = 24;
     var catH = catData.length * catBarH + catMargin.top + catMargin.bottom;
@@ -347,7 +347,7 @@ def _(df_intents, json_lib, mo):
     bars.exit().remove();
     }}
 
-    // ═══ 2. ENTITY STACKED BAR CHART ═══
+    /* ═══ 2. ENTITY STACKED BAR CHART ═══ */
     var entMargin = {{top: 5, right: 30, bottom: 5, left: 160}};
     var entBarH = 20;
     var entW = 700;
@@ -359,7 +359,7 @@ def _(df_intents, json_lib, mo):
     var entY = d3.scaleBand().padding(0.12);
 
     function drawEntityBars() {{
-    // Aggregate per entity
+    /* Aggregate per entity */
     var filteredData = activeFilter
         ? entityData.filter(function(d) {{ return d.category === activeFilter; }})
         : entityData;
@@ -384,7 +384,7 @@ def _(df_intents, json_lib, mo):
     entX.domain([0, maxTotal]);
     entY.domain(entityTotals.map(function(d) {{ return d.entity; }}));
 
-    // Build stacked segments
+    /* Build stacked segments */
     var segments = [];
     entityTotals.forEach(function(ent) {{
         var x0 = 0;
@@ -398,7 +398,7 @@ def _(df_intents, json_lib, mo):
         }});
     }});
 
-    // Labels
+    /* Labels */
     var labels = entG.selectAll(".ent-label").data(entityTotals, function(d) {{ return d.entity; }});
     labels.exit().remove();
     var labelsE = labels.enter().append("text").attr("class", "ent-label");
@@ -408,7 +408,7 @@ def _(df_intents, json_lib, mo):
         .style("font-size", "10px").style("fill", "#333")
         .text(function(d) {{ return d.entity; }});
 
-    // Bars
+    /* Bars */
     var bars = entG.selectAll(".ent-seg").data(segments, function(d) {{ return d.entity + "-" + d.category; }});
     bars.exit().remove();
     var barsE = bars.enter().append("rect").attr("class", "ent-seg bar");
@@ -431,7 +431,7 @@ def _(df_intents, json_lib, mo):
         .on("click", function(event, d) {{ setFilter(d.category); }});
     }}
 
-    // ═══ 3. HEATMAP ═══
+    /* ═══ 3. HEATMAP ═══ */
     var hmMargin = {{top: 5, right: 30, bottom: 60, left: 160}};
     var hmCellW = 38, hmCellH = 22;
     var hmW = Math.max(700, datesSorted.length * hmCellW + hmMargin.left + hmMargin.right);
@@ -444,7 +444,7 @@ def _(df_intents, json_lib, mo):
     var hmX = d3.scaleBand().domain(datesSorted).range([0, datesSorted.length * hmCellW]).padding(0.05);
     var hmY = d3.scaleBand().domain(catsSorted).range([0, catsSorted.length * hmCellH]).padding(0.05);
 
-    // Axis labels
+    /* Axis labels */
     hmG.append("g").attr("class", "hm-x-axis")
     .attr("transform", "translate(0," + (catsSorted.length * hmCellH) + ")")
     .call(d3.axisBottom(hmX))
@@ -491,7 +491,7 @@ def _(df_intents, json_lib, mo):
         .on("click", function(event, d) {{ setFilter(d.category); }});
     }}
 
-    // ═══ UPDATE ALL ═══
+    /* ═══ UPDATE ALL ═══ */
     function updateAll() {{
     drawCatBars();
     drawEntityBars();
@@ -805,9 +805,9 @@ def _(
     "Location": "#4169E1"
     }};
 
-    // ============================================================
-    // LEFT PANEL: TIMELINE
-    // ============================================================
+    /* ============================================================ */
+    /* LEFT PANEL: TIMELINE */
+    /* ============================================================ */
     var margin = {{top: 60, right: 15, bottom: 35, left: 55}};
     var rowHeight = 55;
     var summaryHeight = 50;
@@ -849,7 +849,7 @@ def _(
         .style("font-size", "10px").style("font-weight", "bold").text(i + 1);
     }});
 
-    // Density curves
+    /* Density curves */
     allDates.forEach(function(date) {{
     var dayData = filteredData.filter(function(d) {{ return d.date_str === date; }});
     if (dayData.length === 0) return;
@@ -866,7 +866,7 @@ def _(
     svg.append("path").datum(bins).attr("d", area).attr("fill", "#5B9BD5").attr("opacity", 0.15);
     }});
 
-    // Group by date+hour
+    /* Group by date+hour */
     var grouped = {{}};
     filteredData.forEach(function(d) {{
     var hour = Math.floor(d.hour_float);
@@ -878,7 +878,7 @@ def _(
     var tooltip = d3.select("#tooltip");
     var allDotGroups = [];
 
-    // Draw clickable dots
+    /* Draw clickable dots */
     Object.keys(grouped).forEach(function(key) {{
     var parts = key.split("|");
     var date = parts[0];
@@ -928,7 +928,7 @@ def _(
     }});
     }});
 
-    // Summary row
+    /* Summary row */
     var summaryTop = tlHeight + 10;
     svg.append("rect").attr("x", 0).attr("y", summaryTop)
     .attr("width", tlWidth).attr("height", summaryHeight)
@@ -963,7 +963,7 @@ def _(
     .call(d3.axisBottom(x).tickValues(tickVals).tickFormat(function(d) {{ return d + ":00"; }}))
     .selectAll("text").style("font-size", "11px");
 
-    // Legends
+    /* Legends */
     var cleg = svg.append("g").attr("transform", "translate(0,-50)");
     cleg.append("text").attr("x", 0).attr("y", 0).text("Category:").style("font-size", "9px").style("font-weight", "bold");
     Object.entries(categoryColors).forEach(function(e, i) {{
@@ -974,14 +974,14 @@ def _(
     cleg.append("text").attr("x", 60 + col * 125 + 12).attr("y", row * 14).text(e[0]).style("font-size", "8px");
     }});
 
-    // ============================================================
-    // CLICK HANDLER — updates chat box + ego network
-    // ============================================================
+    /* ============================================================ */
+    /* CLICK HANDLER — updates chat box + ego network */
+    /* ============================================================ */
     function onMessageClick(d) {{
     updateChatBox(d);
     updateEgoNetwork(d);
 
-    // Highlight the clicked dot in timeline
+    /* Highlight the clicked dot in timeline */
     allDotGroups.forEach(function(item) {{
         if (item.d.node_id === d.node_id) {{
             item.g.select(".dot-rect").attr("stroke", "#ff0000").attr("stroke-width", 2.5);
@@ -991,9 +991,9 @@ def _(
     }});
     }}
 
-    // ============================================================
-    // RIGHT TOP: CHAT BOX (tabbed)
-    // ============================================================
+    /* ============================================================ */
+    /* RIGHT TOP: CHAT BOX (tabbed) */
+    /* ============================================================ */
     var currentClickedMsg = null;
     var currentTab = "all";
 
@@ -1019,7 +1019,7 @@ def _(
         document.getElementById("chat-entity").textContent = "— " + entity + " ↔ " + receiver;
     }}
 
-    // Filter messages based on active tab
+    /* Filter messages based on active tab */
     var history;
     if (currentTab === "all") {{
         history = allData.filter(function(m) {{
@@ -1074,28 +1074,28 @@ def _(
         container.appendChild(div);
     }});
 
-    // Scroll to highlighted
+    /* Scroll to highlighted */
     var highlighted = container.querySelector(".highlighted");
     if (highlighted) {{
         highlighted.scrollIntoView({{ behavior: "smooth", block: "center" }});
     }}
     }}
 
-    // ============================================================
-    // RIGHT BOTTOM: EGO NETWORK (hub-and-spoke, ego in center)
-    // ============================================================
+    /* ============================================================ */
+    /* RIGHT BOTTOM: EGO NETWORK (hub-and-spoke, ego in center) */
+    /* ============================================================ */
     function updateEgoNetwork(clickedMsg) {{
     var entity = clickedMsg.sender_name;
     document.getElementById("ego-title").textContent = "Network — " + entity;
     var emptyEl = document.getElementById("ego-empty");
     if (emptyEl) emptyEl.remove();
 
-    // Gather ALL messages involving this entity
+    /* Gather ALL messages involving this entity */
     var entityMsgs = allData.filter(function(m) {{
         return m.sender_name === entity || m.receiver_name === entity;
     }});
 
-    // Build partner stats
+    /* Build partner stats */
     var partnerMap = {{}};
     entityMsgs.forEach(function(m) {{
         var partner = m.sender_name === entity ? m.receiver_name : m.sender_name;
@@ -1111,7 +1111,7 @@ def _(
         if (m.suspicion > partnerMap[partner].maxSusp) partnerMap[partner].maxSusp = m.suspicion;
     }});
 
-    // Get types
+    /* Get types */
     allData.forEach(function(m) {{
         if (partnerMap[m.sender_name]) partnerMap[m.sender_name].type = m.sender_type;
         if (partnerMap[m.receiver_name]) partnerMap[m.receiver_name].type = m.receiver_type;
@@ -1120,7 +1120,7 @@ def _(
     var partners = Object.values(partnerMap);
     var nPartners = partners.length;
 
-    // Clear
+    /* Clear */
     var egoSvg = d3.select("#ego-svg");
     egoSvg.selectAll("*").remove();
 
@@ -1133,7 +1133,7 @@ def _(
 
     egoSvg.attr("viewBox", "0 0 " + egoW + " " + egoH);
 
-    // Arrow markers
+    /* Arrow markers */
     var defs = egoSvg.append("defs");
     defs.append("marker").attr("id", "ego-arrow-out")
         .attr("viewBox", "0 0 10 10").attr("refX", 26).attr("refY", 5)
@@ -1142,13 +1142,13 @@ def _(
 
     var egoTooltip = d3.select("#tooltip");
 
-    // Get ego type
+    /* Get ego type */
     var egoType = "";
     allData.forEach(function(m) {{
         if (m.sender_name === entity) egoType = m.sender_type;
     }});
 
-    // Position partners in a circle around center
+    /* Position partners in a circle around center */
     partners.forEach(function(p, i) {{
         var ang = (2 * Math.PI * i / nPartners) - Math.PI / 2;
         p.px = ecx + Math.cos(ang) * egoR;
@@ -1156,7 +1156,7 @@ def _(
         p.ang = ang;
     }});
 
-    // Draw edges (center to each partner)
+    /* Draw edges (center to each partner) */
     partners.forEach(function(p) {{
         var total = p.out + p.in;
         var avgSusp = p.totalMsgs > 0 ? (p.totalSusp / p.totalMsgs).toFixed(1) : "0";
@@ -1169,7 +1169,7 @@ def _(
         var dist = Math.sqrt(dx*dx + dy*dy) || 1;
 
         if (p.out > 0 && p.in > 0) {{
-            // Bidirectional: curve both slightly apart
+            /* Bidirectional: curve both slightly apart */
             var offset = 14;
             var mx1 = (ecx+p.px)/2 + (-dy/dist)*offset;
             var my1 = (ecy+p.py)/2 + (dx/dist)*offset;
@@ -1200,7 +1200,7 @@ def _(
                 .attr("opacity",0.45).attr("stroke-dasharray","5,3");
         }}
 
-        // Invisible wide hover target for edge tooltip
+        /* Invisible wide hover target for edge tooltip */
         egoSvg.append("line")
             .attr("x1",ecx).attr("y1",ecy).attr("x2",p.px).attr("y2",p.py)
             .attr("stroke","transparent").attr("stroke-width",14)
@@ -1230,7 +1230,7 @@ def _(
             }})
             .on("mouseout",function(){{ egoTooltip.style("display","none"); }});
 
-        // Count label on edge midpoint
+        /* Count label on edge midpoint */
         if (total > 1) {{
             var labelDist = dist * 0.45;
             var lx = ecx + (dx/dist)*labelDist;
@@ -1241,7 +1241,7 @@ def _(
         }}
     }});
 
-    // Center ego node (on top)
+    /* Center ego node (on top) */
     egoSvg.append("circle").attr("cx",ecx).attr("cy",ecy).attr("r",16)
         .attr("fill",typeColors[egoType]||"#999")
         .attr("stroke","#333").attr("stroke-width",2.5);
@@ -1253,7 +1253,7 @@ def _(
         .style("pointer-events","none")
         .text(entity.length>20 ? entity.substring(0,20)+"\u2026" : entity);
 
-    // Partner nodes
+    /* Partner nodes */
     partners.forEach(function(p) {{
         var suspBorder = p.maxSusp >= 7 ? "#e6194b" : p.maxSusp >= 4 ? "#f58231" : "#666";
         var r = 9;
@@ -1302,7 +1302,7 @@ def _(
         }});
     }});
 
-    // Legend
+    /* Legend */
     var eLeg = egoSvg.append("g").attr("transform","translate(6,"+(egoH-50)+")");
     eLeg.append("text").attr("x",0).attr("y",0).style("font-size","10px").style("font-weight","bold").text("Entity type:");
     Object.entries(typeColors).forEach(function(e,i) {{
