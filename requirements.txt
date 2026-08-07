@@ -1,0 +1,7 @@
+marimo
+pandas
+numpy
+networkx
+altair
+scipy
+plotly
