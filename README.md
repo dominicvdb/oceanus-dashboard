@@ -28,6 +28,35 @@ Beyond attribution, keeping the scope narrow has a practical benefit: the full d
 pulls in SciPy and Plotly and executes 83 cells, which makes for an unpleasant wait in a
 WebAssembly runtime. This version needs four packages and 12 cells.
 
+## Using the dashboard
+
+Open the **Q1: Temporal Patterns** tab and start on **Interactive Dashboard**.
+
+**1. Pick a message from the timeline.** The timeline on the left plots every message
+by date and time of day, coloured by category. Each square is a single message. Click
+one to select it — this is the entry point for everything else on the screen.
+
+**2. Read the surrounding context.** Selecting a message fills the two panels on the
+right. The **message history** shows the full conversation thread for the entity who
+sent it, so you can read what came before and after. The **ego network** below it draws
+that entity at the centre with every counterpart they communicated with, so you can see
+at a glance who they talk to and how often.
+
+**3. Follow the thread.** Both panels are clickable. Selecting another message in the
+history, or another entity in the ego network, re-centres the view on that person. This
+is how you trace a conversation from one participant to the next.
+
+**4. Narrow the field.** The filters at the top constrain everything below them:
+*Filter by Category* (e.g. only covert coordination), *Filter by Entity Type* (person,
+vessel, organisation), *Filter by Entity* (one or more specific names), and
+*Min. Suspicion*, which hides messages below a given suspicion score. Combining a high
+suspicion threshold with a single category is a quick way to surface the messages worth
+reading first.
+
+The other two views are standalone: **Category Overview** gives the aggregate picture
+across all 584 messages, and **Self-Message Audit** presents the data quality finding
+described below.
+
 ## What Q1 does
 
 The dataset is a knowledge graph of 584 intercepted radio messages exchanged between 43
