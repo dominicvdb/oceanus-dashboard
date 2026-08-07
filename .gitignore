@@ -1,0 +1,15 @@
+# marimo
+__marimo__/
+dist/
+.marimo.toml
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# os
+.DS_Store
+Thumbs.db
