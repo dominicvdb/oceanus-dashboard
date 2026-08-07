@@ -41,7 +41,7 @@ jobs:
       - name: Export notebook to WASM
         run: |
           set -euxo pipefail
-          python -m marimo export html-wasm combined_app_final.py -o dist --mode run
+                    python -m marimo export html-wasm app.py -o dist --mode run
           touch dist/.nojekyll
           ls -la dist
           ls -la dist/public
