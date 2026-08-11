@@ -55,20 +55,34 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     intro_background = mo.md(r"""
-    # <center> Mini-Challenge 3 </center>
+    # Oceanus Communications: Temporal Patterns
 
-    ## **Team Members**
+    An interactive tool for investigating two weeks of intercepted radio traffic
+    on the island of Oceanus.
 
-    1. AmanDeep Singh
-    2. Dominic van den Bungelaar
-    3. Kim Wilmink
+    ---
 
-    ## **Background**
-    Over the past decade, the community of Oceanus has faced numerous transformations and challenges evolving from its fishing-centric origins. Following major crackdowns on illegal fishing activities, suspects have shifted investments into more regulated sectors such as the ocean tourism industry, resulting in growing tensions. This increased tourism has recently attracted the likes of international pop star Sailor Shift, who announced plans to film a music video on the island.
+    ### The situation
 
-    Clepper Jessen, a former analyst at FishEye and now a seasoned journalist for the Hacklee Herald, has been keenly observing these rising tensions. Recently, he turned his attention towards the temporary closure of Nemo Reef. By listening to radio communications and utilizing his investigative tools, Clepper uncovered a complex web of expedited approvals and secretive logistics. These efforts revealed a story involving high-level Oceanus officials, Sailor Shift's team, local influential families, and local conservationist group The Green Guardians, pointing towards a story of corruption and manipulation.
+    Oceanus is a fictional island community built for the
+    [VAST Challenge 2025](https://vast-challenge.github.io/2025/). After a crackdown on
+    illegal fishing, money moved into ocean tourism, and tensions followed. When the
+    marine reserve at Nemo Reef was abruptly closed to the public, a local journalist
+    began intercepting radio communications to find out why.
 
-    Our task is to develop new and novel visualizations and visual analytics approaches to help Clepper get to the bottom of this story.
+    The result is this dataset: **584 messages exchanged between 43 people, vessels and
+    organisations** over fourteen days. Somewhere in that traffic is evidence of who
+    pushed the closure through, and why. The messages are not labelled, and the people
+    who matter most are the ones being careful about what they say.
+
+    ### What this dashboard does
+
+    Every message has been classified into one of ten communication categories using an
+    LLM, then plotted by **when it was sent** rather than only by who sent it. Timing
+    turns out to be revealing: routine harbour traffic follows the working day, while
+    coordination between certain parties clusters at the edges of it. The dashboard lets
+    you move from that aggregate pattern down to a single message and its surrounding
+    conversation, and back out again.
     """)
     return (intro_background,)
 
@@ -76,31 +90,46 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     intro_questions = mo.md(r"""
-    ## **Tasks & Questions**
+    ### How to use it
 
-    Clepper diligently recorded all intercepted radio communications over the last two weeks. With the help of his intern, they have analyzed their content to identify important events and relationships between key players. The result is a knowledge graph describing the last two weeks on Oceanus. Clepper and his intern have spent a large amount of time generating this knowledge graph, and they would now like some assistance using it to answer the following questions.
+    Open the **Q1: Temporal Patterns** tab above and start on **Interactive Dashboard**.
 
-    1. Clepper found that messages frequently came in at around the same time each day.
-        - Develop a graph-based visual analytics approach to identify any daily temporal patterns in communications.
-        - How do these patterns shift over the two weeks of observations?
-        - Focus on a specific entity and use this information to determine who has influence over them.
+    **1. Pick a message.** The timeline on the left plots every message by date and time
+    of day, coloured by category. Each square is one message. Click it to select it.
 
-    2. Clepper has noticed that people often communicate with (or about) the same people or vessels, and that grouping them together may help with the investigation.
-        - Use visual analytics to help Clepper understand and explore the interactions and relationships between vessels and people in the knowledge graph.
-        - Are there groups that are more closely associated? If so, what are the topic areas that are predominant for each group?
-              - For example, these groupings could be related to: Environmentalism (known associates of Green Guardians), Sailor Shift, and fishing/leisure vessels.
+    **2. Read the context.** The panels on the right fill in. **Message history** shows
+    the full conversation thread for the sender; the **ego network** below draws that
+    entity at the centre with everyone they communicated with.
 
-    3. It was noted by Clepper's intern that some people and vessels are using pseudonyms to communicate.
-        - Expanding upon your prior visual analytics, determine who is using pseudonyms to communicate, and what these pseudonyms are.
-              - Some that Clepper has already identified include: "Boss", and "The Lookout", but there appear to be many more.
-              - To complicate the matter, pseudonyms may be used by multiple people or vessels.
-        - Describe how your visualizations make it easier for Clepper to identify common entities in the knowledge graph.
-        - How does your understanding of activities change given your understanding of pseudonyms?
+    **3. Follow the thread.** Both panels are clickable. Selecting another message, or
+    another entity in the network, re-centres the view on that person. This is how you
+    trace a conversation from one participant to the next.
 
-    4. Clepper suspects that Nadia Conti, who was formerly entangled in an illegal fishing scheme, may have continued illicit activity within Oceanus.
+    **4. Narrow the field.** The filters at the top constrain everything below them:
+    category, entity type, specific entities, and a minimum suspicion score. Setting
+    suspicion high and picking a single category is a fast way to surface the messages
+    worth reading first.
 
-        - Through visual analytics, provide evidence that Nadia is, or is not, doing something illegal.
-        - Summarize Nadia's actions visually. Are Clepper's suspicions justified?
+    Two other views sit alongside it. **Category Overview** gives the aggregate picture
+    across all 584 messages. **Self-Message Audit** documents a data quality problem:
+    31 messages are recorded as sent by an entity to itself, and parsing the message text
+    recovers the real sender for most of them.
+
+    ---
+
+    ### About this deployment
+
+    This was a three-person project covering four research questions. **Only Question 1
+    is published here, and it is my individual contribution.** Questions 2 to 4 were the
+    work of my teammates and are deliberately not included.
+
+    Built with [marimo](https://marimo.io/) and hand-written D3.js. The entire
+    application runs in your browser: Python is compiled to WebAssembly, so there is no
+    server, no API key and no backend of any kind.
+
+    **Dominic van den Bungelaar** ·
+    [Source code](https://github.com/dominicvdb/oceanus-dashboard) ·
+    Full team: AmanDeep Singh, Dominic van den Bungelaar, Kim Wilmink
     """)
     return (intro_questions,)
 
